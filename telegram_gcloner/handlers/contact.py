@@ -24,7 +24,7 @@ def contact(update, context):
     text = update.message.text.strip('/contact')
     if text:
         context.bot.send_message(chat_id=config.USER_IDS[0],
-                                 text='📬 Received message from {} ({}):'.format(
+                                 text='📬 {} ({} এর কাছ থেকে একটি মেসেজ এসেছে ):'.format(
                                      mention_html(update.effective_user.id, html.escape(update.effective_user.name)),
                                      update.effective_user.id),
                                  parse_mode=ParseMode.HTML)
@@ -32,7 +32,7 @@ def contact(update, context):
                                     from_chat_id=update.message.chat_id,
                                     message_id=update.message.message_id)
         logger.info('{} ({}) left a message: {}'.format(update.effective_user.name, update.effective_user.id, text))
-        rsp = update.message.reply_text('Roger that 👍')
+        rsp = update.message.reply_text('ওকে 👍')
         rsp.done.wait(timeout=60)
         message_id = rsp.result().message_id
         if update.message.chat_id < 0:
@@ -41,7 +41,7 @@ def contact(update, context):
             context.job_queue.run_once(callback_delete_message, config.TIMER_TO_DELETE_MESSAGE,
                                        context=(update.message.chat_id, update.message.message_id))
     else:
-        rsp = update.message.reply_text('You\'re so shy, don\'t you want to say anything?\n' +
+        rsp = update.message.reply_text('কিছু বলার থাকলে বলে ফেলুন?\n' +
                                         config.AD_STRING.format(context.bot.username),
                                         ParseMode.HTML)
         rsp.done.wait(timeout=60)
