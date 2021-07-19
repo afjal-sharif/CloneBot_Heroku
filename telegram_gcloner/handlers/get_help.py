@@ -24,6 +24,8 @@ def get_help(update, context):
               ' │ /folders - নতুন ড্রাইভ/ফোল্ডার যোগ করার জন্য\n' \
               ' │ /sa - বট ইনবক্সে , সার্ভিস একাউন্টের জিপ ফাইল আপলোড করে এই কমান্ড ঐ ফাইলে রিপ্লে করুন.\n' \
               ' │ /help - এই কমান্ড গাইড দেখতে\n'
+              ' │ /ban - কোন নির্দিষ্ট ব্যবহারকারীকে ব্লকলিস্টে যোগ করতে\n'
+              ' │ /unban - কোন নির্দিষ্ট ব্যবহারকারীকে ব্লকলিস্টে বাদ দিতে\n'
     rsp = update.message.reply_text(message)
     rsp.done.wait(timeout=60)
     message_id = rsp.result().message_id
