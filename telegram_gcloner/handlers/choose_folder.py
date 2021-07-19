@@ -15,8 +15,8 @@ from utils.restricted import restricted
 
 logger = logging.getLogger(__name__)
 
-default_max_folders = 4
-default_max_folders_vip = 10
+default_max_folders = 10
+default_max_folders_vip = 20
 
 udkey_folders = 'folder_ids'
 udkey_folders_cache = 'folder_ids_cache'
@@ -56,7 +56,7 @@ def chosen_folder(update, context):
         gd = GoogleDrive(update.effective_user.id)
     except Exception as e:
         context.bot.send_message(chat_id=update.effective_user.id,
-                                 text='🔸 Please make sure the SA archive has been uploaded and the collection folder has been configured.\n'
+                                 text='🔸 সার্ভিস একাউন্ট এর জিপ ফাইল সঠিকভাবে কনফিগার করা হয়েছে কিনা যাচাই করে নিন.\n'
                                       '<code>{}</code>'.format(html.escape(str(e))),
                                  parse_mode=ParseMode.HTML)
         return
@@ -103,7 +103,7 @@ def choose_folder(update, context):
         gd = GoogleDrive(update.effective_user.id)
     except Exception as e:
         context.bot.send_message(chat_id=update.effective_user.id,
-                                 text='🔸 Please make sure the SA archive has been uploaded and the collection folder has been configured.\n'
+                                 text='🔸 সার্ভিস একাউন্ট এর জিপ ফাইল সঠিকভাবে কনফিগার করা হয়েছে কিনা যাচাই করে নিন\n'
                                       '<code>{}</code>'.format(html.escape(str(e))),
                                  parse_mode=ParseMode.HTML)
         return
@@ -159,7 +159,7 @@ def choose_folder(update, context):
                                              parse_mode=ParseMode.HTML)
                 context.user_data[udkey_folders_cache] = copy.deepcopy(folders)
                 if not folders:
-                    folders = {'#': '(No subfolders)'}
+                    folders = {'#': '(কোন ড্রাইভ/ফোল্ডার নেই)'}
                 match_folder_id_replace = match.group('replace')
                 if match_folder_id_replace:
                     context.user_data[udkey_fav_folders_replace] = match_folder_id
@@ -211,14 +211,14 @@ def choose_folder(update, context):
                     0, [InlineKeyboardButton('📁' + current_path,
                                              callback_data=callback_query_prefix)])
             inline_keyboard_drive_ids.append(
-                [InlineKeyboardButton('✔️ Select this folder({})'.format(current_folder_name),
+                [InlineKeyboardButton('✔️ এই ড্রাইভ/ফোল্ডারটি নির্বাচন করা হলো({})'.format(current_folder_name),
                                       callback_data='chosen_folder,{}'.format(current_folder_id))])
-    inline_keyboard_drive_ids.append([InlineKeyboardButton('🔙 Go back',
+    inline_keyboard_drive_ids.append([InlineKeyboardButton('🔙 আগের পৃষ্ঠায় ফিরুন',
                                                            callback_data='choose_folder' if current_folder_id else '#'),
-                                      InlineKeyboardButton('Cancel', callback_data='cancel')])
+                                      InlineKeyboardButton('❌মেনু ', callback_data='cancel')])
     context.bot.edit_message_text(chat_id=update.effective_chat.id,
                                   message_id=message_id,
-                                  text='🔶 Select the directory you want to use, there are {} subdirectories.'.format(
+                                  text='🔶 ব্যবহার করার জন্য ড্রাইভ/ফোল্ডার নির্বাচন করুন, আপনার {} টি ড্রাইভ/ফোল্ডার রয়েছে.'.format(
                                       folders_len),
                                   reply_markup=InlineKeyboardMarkup(inline_keyboard_drive_ids))
 
@@ -235,7 +235,7 @@ def set_folders(update, context):
     query = update.callback_query
     page = 1
     if not query:
-        rsp = update.message.reply_text('⚙️ Getting shared drives...')
+        rsp = update.message.reply_text('⚙️ Getting Shared drives...')
         rsp.done.wait(timeout=60)
         message_id = rsp.result().message_id
     else:
@@ -263,12 +263,12 @@ def set_folders(update, context):
         inline_keyboard_drive_ids = []
         folder_ids_len = 0
     if folder_ids_len < max_folders:
-        inline_keyboard_drive_ids.insert(0, [InlineKeyboardButton('➕ Add favorite folder', callback_data=callback_query_prefix)])
-    inline_keyboard_drive_ids.append([InlineKeyboardButton('✔️ Done', callback_data='cancel')])
+        inline_keyboard_drive_ids.insert(0, [InlineKeyboardButton('➕ নতুন ড্রাইভ/ফোল্ডার যোগ করুন', callback_data=callback_query_prefix)])
+    inline_keyboard_drive_ids.append([InlineKeyboardButton('✔️ যোগকরা শেষ', callback_data='cancel')])
 
     context.bot.edit_message_text(chat_id=update.effective_chat.id,
                                   message_id=message_id,
-                                  text='📁 Total {}/{} Destination Folders ：'.format(
+                                  text='📁 {}/{} টি ড্রাইভ/ফোল্ডার যোগ করা হয়েছে ：'.format(
                                       folder_ids_len,
                                       max_folders,
                                   ),
