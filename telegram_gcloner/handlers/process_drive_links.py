@@ -65,23 +65,23 @@ def process_drive_links(update, context):
 
     if not folder_ids:
         return
-    message = '📑 The following files were detected :\n'
+    message = '📑 এই ফাইল গুলো পাওয়া গেছে :\n'
 
     try:
         gd = GoogleDrive(update.effective_user.id)
     except Exception as e:
-        update.message.reply_text('🔸 Please make sure the SA archive has been uploaded and the collection folder has been configured.\n{}'.format(e))
+        update.message.reply_text('🔸 সার্ভিস একাউন্ট এবং ড্রাইভ/ফোল্ডার সঠিকভাবে কনফিগার করা হয়েছে কিনা যাচাই করে নিন.\n{}'.format(e))
         return
 
     for item in folder_ids:
         try:
             folder_name = gd.get_file_name(item)
         except Exception as e:
-            update.message.reply_text('🔸 Please make sure that the SA archive has been uplaoded and that the SA has permission to access the link.\n{}'.format(e))
+            update.message.reply_text('🔸  সার্ভিস একাউন্ট সঠিক ভাবে যোগ করুন এবং আপনার লিংকে সার্ভিস একাউন্ট গুলোর পারমিশন আছে কিনা তা যাচাই করুন.\n{}'.format(e))
             return
         message += '     <a href="https://drive.google.com/open?id={}">{}</a>\n'.format(
             item, html.escape(folder_name))
-    message += '\n📂 Please select the target destination'
+    message += '\n📂 ফাইল ক্লোন করার জন্য ড্রাইভ/ফোল্ডার নির্বাচন করুন'
     fav_folder_ids = context.user_data.get(udkey_folders, None)
 
     callback_query_prefix = 'save_to_folder'
@@ -97,7 +97,7 @@ def process_drive_links(update, context):
             max_per_page=10,
         )
     else:
-        inline_keyboard_drive_ids = [[InlineKeyboardButton(text='⚠️ Use /folders to add a favorite folder', callback_data='#')]]
+        inline_keyboard_drive_ids = [[InlineKeyboardButton(text='⚠️ /folders কমান্ডের মাধ্যমে নতুন ফোল্ডার যোগ করুন', callback_data='#')]]
     inline_keyboard = inline_keyboard_drive_ids
     update.message.reply_text(message, parse_mode=ParseMode.HTML,
                               disable_web_page_preview=True, reply_markup=InlineKeyboardMarkup(inline_keyboard))
@@ -132,7 +132,7 @@ def save_to_folder_page(update, context):
             max_per_page=10,
         )
     else:
-        inline_keyboard_drive_ids = [[InlineKeyboardButton(text='🔹 If you don\'t have any shared drives, you must get one here : @MsGsuite before you can use this.', callback_data='#')]]
+        inline_keyboard_drive_ids = [[InlineKeyboardButton(text='🔹 আপনার শেয়ার্ড ড্রাইভ না থাকলে, একটি শেয়ার্ড ড্রাইভ নিয়ে নিন.', callback_data='#')]]
     inline_keyboard = inline_keyboard_drive_ids
     query.message.edit_reply_markup(reply_markup=InlineKeyboardMarkup(inline_keyboard))
 
