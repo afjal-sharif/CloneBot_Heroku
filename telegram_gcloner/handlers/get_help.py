@@ -27,6 +27,8 @@ def get_help(update, context):
               ' │ /ban - কোন নির্দিষ্ট ব্যবহারকারীকে ব্লকলিস্টে যোগ করতে\n'
               ' │ /unban - কোন নির্দিষ্ট ব্যবহারকারীকে ব্লকলিস্টে বাদ দিতে\n'
               ' │ /id - আইডি নাম্বার দেখতে\n'
+              ' │ /vip - ভিআইপি মেম্বার যোগ করতে\n'
+              ' │ /unvip - ভিআইপি মেম্বার বাদ দিতে\n'
     rsp = update.message.reply_text(message)
     rsp.done.wait(timeout=60)
     message_id = rsp.result().message_id
