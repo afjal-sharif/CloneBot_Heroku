@@ -18,12 +18,12 @@ def init(dispatcher: Dispatcher):
 
 @restricted
 def get_help(update, context):
-    message = 'Send a Google Drive link, or forward a message with a Google Drive link to manually transfer.\n' \
-              'Configuration with /sa and /folders is required.\n\n' \
-              '📚 Commands:\n' \
-              ' │ /folders - Set favorite folders\n' \
-              ' │ /sa - Private chat only, upload a ZIP containing SA accounts with this command as the subject.\n' \
-              ' │ /help - Output this message\n'
+    message = 'ফাইল ক্লোন করার জন্য গুগল ড্রাইভ লিংক প্রেরণ করুন অথবা গুগল ড্রাইভ লিংক সহ মেসেজ ফোরওয়ার্ড করুন .\n' \
+              '**সার্ভিস একাউন্ট ও ড্রাইভ/ফোল্ডার কনফিগার করা থাকতে হবে.\n\n' \
+              '📚 কমান্ডসমূহ:\n' \
+              ' │ /folders - নতুন ড্রাইভ/ফোল্ডার যোগ করার জন্য\n' \
+              ' │ /sa - বট ইনবক্সে , সার্ভিস একাউন্টের জিপ ফাইল আপলোড করে এই কমান্ড ঐ ফাইলে রিপ্লে করুন.\n' \
+              ' │ /help - এই কমান্ড গাইড দেখতে\n'
     rsp = update.message.reply_text(message)
     rsp.done.wait(timeout=60)
     message_id = rsp.result().message_id
