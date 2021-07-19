@@ -36,9 +36,9 @@ class MySaveFileThread(threading.Thread):
         chat_id = update.effective_chat.id
         user_id = update.effective_user.id
         gd = GoogleDrive(user_id)
-        message = '╭──────⌈ 📥 Copying ⌋──────╮\n│\n├ 📂 Target directory：{}\n'.format(dest_folder['path'])
+        message = '╭──────⌈ 📥 কপি হচ্ছে ⌋──────╮\n│\n├ 📂এই ফোল্ডারে কপি হচ্ছে：{}\n'.format(dest_folder['path'])
         inline_keyboard = InlineKeyboardMarkup(
-            [[InlineKeyboardButton(text=f'🚫 Stop', callback_data=f'stop_task,{thread_id}')]])
+            [[InlineKeyboardButton(text=f'🚫 কপি বন্ধ করুন ❌', callback_data=f'stop_task,{thread_id}')]])
 
         reply_message_id = update.callback_query.message.reply_to_message.message_id \
             if update.callback_query.message.reply_to_message else None
@@ -153,13 +153,13 @@ class MySaveFileThread(threading.Thread):
                         progress_checked_files = int(match_checked_files.group(1))
                         progress_total_check_files = int(match_checked_files.group(2))
                     progress_max_percentage_10 = max(progress_size_percentage_10, progress_file_percentage_10)
-                    message_progress = '├ 🗂 Source : <a href="https://drive.google.com/open?id={}">{}</a>\n│\n' \
-                                       '├ ✔️ Checks： <code>{} / {}</code>\n' \
-                                       '├ 📥 Transfers： <code>{} / {}</code>\n' \
-                                       '├ 📦 Size：<code>{} / {}</code>\n{}' \
-                                       '├ ⚡️Speed：<code>{}</code> \n├⏳ ETA: <code>{}</code>\n' \
-                                       '├ ⛩ Progress：[<code>{}</code>] {: >4}%\n│\n' \
-                                       '├──────⌈ ⚡️ CloneBot ⌋──────' \
+                    message_progress = '├ 🗂 এই ফোল্ডারে হতে কপি হচ্ছে : <a href="https://drive.google.com/open?id={}">{}</a>\n│\n' \
+                                       '├ ✔️ চেক： <code>{} / {}</code>\n' \
+                                       '├ 📥 ট্রান্সফার： <code>{} / {}</code>\n' \
+                                       '├ 📦 সাইজ：<code>{} / {}</code>\n{}' \
+                                       '├ ⚡️ স্পীড：<code>{}</code> \n├⏳ ETA: <code>{}</code>\n' \
+                                       '├ ⛩ প্রোগ্রেস：[<code>{}</code>] {: >4}%\n│\n' \
+                                       '├──────⌈ ⚡️ ক্লোন-বট ⌋──────' \
                         .format(
                         folder_id,
                         html.escape(destination_path),
@@ -169,7 +169,7 @@ class MySaveFileThread(threading.Thread):
                         progress_total_files,
                         progress_transferred_size,
                         progress_total_size,
-                        f'Speed：<code>{progress_speed_file}</code>\n' if is_fclone is True else '',
+                        f'স্পীড：<code>{progress_speed_file}</code>\n' if is_fclone is True else '',
                         progress_speed,
                         progress_eta,
                         '●' * progress_file_percentage_10 + '○' * (
@@ -245,7 +245,7 @@ class MySaveFileThread(threading.Thread):
                 message = '{}{} ❌\n│{}\n│{}\n│'.format(message, message_progress_heading, message_progress_content,
                                                      link_text)
             elif progress_file_percentage == 0 and progress_checked_files > 0:
-                message = '{}{} ✅\n│ File already exists!\n│ {}\n│'.format(message, message_progress_heading, link_text)
+                message = '{}{} ✅\n│ ফাইল আগে থেকেই ড্রাইভে আছে!\n│ {}\n│'.format(message, message_progress_heading, link_text)
             else:
                 message = '{}{}{}\n│{}\n│{}\n│\n│'.format(message,
                                                       message_progress_heading,
@@ -264,7 +264,7 @@ class MySaveFileThread(threading.Thread):
             if self.critical_fault is True:
                 break
 
-        message += '\n╰──────⌈ ✅ Finished ! ⌋──────╯'
+        message += '\n╰──────⌈ ✅ কপি করা শেষ ! ⌋──────╯'
         try:
             context.bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=message,
                                           parse_mode=ParseMode.HTML, disable_web_page_preview=True)
