@@ -26,6 +26,7 @@ def get_help(update, context):
               ' │ /help - এই কমান্ড গাইড দেখতে\n'
               ' │ /ban - কোন নির্দিষ্ট ব্যবহারকারীকে ব্লকলিস্টে যোগ করতে\n'
               ' │ /unban - কোন নির্দিষ্ট ব্যবহারকারীকে ব্লকলিস্টে বাদ দিতে\n'
+              ' │ /id - আইডি নাম্বার দেখতে\n'
     rsp = update.message.reply_text(message)
     rsp.done.wait(timeout=60)
     message_id = rsp.result().message_id
